@@ -9,15 +9,25 @@ class School extends CI_Controller
     {
         parent::__construct();
         $this->load->model('School_model');
+        $this->load->model('Dynamic_country_model');
         $this->load->library('form_validation');        
 		$this->load->library('datatables');
     }
 
     public function index()
     {
-        $this->load->view('header');
-        $this->load->view('school/school_list');
-        $this->load->view('footer');
+    	check_login();
+
+    	if (!empty($_GET['delete'])) {
+    		$this->session->set_flashdata('success_message', 'Rekod Berjaya Dihapuskan');
+    		echo "<script type='text/javascript'>";
+    		echo "window.location.href = window.location.href.replace( /[\?#].*|$/, '' );"; // remove get
+    		echo "</script>";
+    	}
+    	
+        $data['schoolDetails'] = $this->db->get('school')->result();
+        echo $this->session->set_flashdata('current_page','senarai School');
+        $this->load->view('school/school_list', $data);
     } 
     
     public function json() {
@@ -37,14 +47,16 @@ class School extends CI_Controller
 			'school_city_id' => $row->school_city_id,
 			'school_state_id' => $row->school_state_id,
 			'school_country_id' => $row->school_country_id,
+			'school_contact_no' => $row->school_contact_no,
+			'school_fax_no' => $row->school_fax_no,
+			'school_website' => $row->school_website,
 			'school_type' => $row->school_type,
 			'school_level' => $row->school_level,
 			'create_at' => $row->create_at,
 			'update_at' => $row->update_at,
 	    );
-            $this->load->view('header');
+            echo $this->session->set_flashdata('current_page','lihat Sekolah');
             $this->load->view('school/school_read', $data);
-            $this->load->view('footer');
         } else {
             $this->session->set_flashdata('message', 'Rekod Tidak Ditemui');
             redirect(site_url('school'));
@@ -53,9 +65,10 @@ class School extends CI_Controller
 
     public function create() 
     {
+    	check_login();
         $data = array(
-            'pagename' => 'Borang Pendaftaran School',
-            'button' => 'Register School',
+            'pagename' => 'Borang Pendaftaran Sekolah',
+            'button' => 'Daftar Sekolah',
             'action' => site_url('school/create_action'),
 			'school_id' => set_value('school_id'),
 			'school_name' => set_value('school_name'),
@@ -64,14 +77,17 @@ class School extends CI_Controller
 			'school_city_id' => set_value('school_city_id'),
 			'school_state_id' => set_value('school_state_id'),
 			'school_country_id' => set_value('school_country_id'),
+			'school_contact_no' => set_value('school_contact_no'),
+			'school_fax_no' => set_value('school_fax_no'),
+			'school_website' => set_value('school_website'),
 			'school_type' => set_value('school_type'),
 			'school_level' => set_value('school_level'),
 			'create_at' => set_value('create_at'),
 			'update_at' => set_value('update_at'),
+			'country' => $this->Dynamic_country_model->fetch_country(),
 	);
-        $this->load->view('header');
+        echo $this->session->set_flashdata('current_page','pendaftaran School');
         $this->load->view('school/school_form', $data);
-        $this->load->view('footer');
     }
     
     public function create_action() 
@@ -88,10 +104,12 @@ class School extends CI_Controller
 				'school_city_id' => $this->input->post('school_city_id',TRUE),
 				'school_state_id' => $this->input->post('school_state_id',TRUE),
 				'school_country_id' => $this->input->post('school_country_id',TRUE),
+				'school_contact_no' => $this->input->post('school_contact_no',TRUE),
+				'school_fax_no' => $this->input->post('school_fax_no',TRUE),
+				'school_website' => $this->input->post('school_website',TRUE),
 				'school_type' => $this->input->post('school_type',TRUE),
 				'school_level' => $this->input->post('school_level',TRUE),
-				'create_at' => $this->input->post('create_at',TRUE),
-				'update_at' => $this->input->post('update_at',TRUE),
+				'create_at' => date('Y-m-d H:i:s'),
 	    );
 
             $this->School_model->insert($data);
@@ -116,9 +134,11 @@ class School extends CI_Controller
 				'school_city_id' => set_value('school_city_id', $row->school_city_id),
 				'school_state_id' => set_value('school_state_id', $row->school_state_id),
 				'school_country_id' => set_value('school_country_id', $row->school_country_id),
+				'school_contact_no' => set_value('school_contact_no', $row->school_contact_no),
+				'school_fax_no' => set_value('school_fax_no', $row->school_fax_no),
+				'school_website' => set_value('school_website', $row->school_website),
 				'school_type' => set_value('school_type', $row->school_type),
 				'school_level' => set_value('school_level', $row->school_level),
-				'create_at' => set_value('create_at', $row->create_at),
 				'update_at' => set_value('update_at', $row->update_at),
 	    );
              $this->load->view('school/school_form', $data);
@@ -142,6 +162,9 @@ class School extends CI_Controller
 				'school_city_id' => $this->input->post('school_city_id',TRUE),
 				'school_state_id' => $this->input->post('school_state_id',TRUE),
 				'school_country_id' => $this->input->post('school_country_id',TRUE),
+				'school_contact_no' => $this->input->post('school_contact_no',TRUE),
+				'school_fax_no' => $this->input->post('school_fax_no',TRUE),
+				'school_website' => $this->input->post('school_website',TRUE),
 				'school_type' => $this->input->post('school_type',TRUE),
 				'school_level' => $this->input->post('school_level',TRUE),
 				'create_at' => $this->input->post('create_at',TRUE),
@@ -154,16 +177,23 @@ class School extends CI_Controller
         }
     }
     
-    public function delete($id) 
+
+    public function delete() 
     {
+    	$id = $this->input->post('id',TRUE);
         $row = $this->School_model->get_by_id($id);
 
         if ($row) {
-            $this->School_model->delete($id);
-            $this->session->set_flashdata('message', 'Rekod Dipadamkan');
-            redirect(site_url('school'));
+        	if ($this->School_model->delete($id)) {
+        		$this->session->set_flashdata('success_message', 'Rekod Berjaya Dihapuskan');
+            	redirect(site_url('school'));
+        	}else{
+        		$this->session->set_flashdata('err_message', 'Ralat ! Rekod tidak berjaya dihapuskan');
+            	redirect(site_url('school'));
+        	}
+            
         } else {
-            $this->session->set_flashdata('message', 'Rekod Tidak Ditemui');
+            $this->session->set_flashdata('err_message', 'Rekod Tidak Ditemui');
             redirect(site_url('school'));
         }
     }
@@ -172,16 +202,34 @@ class School extends CI_Controller
     {
 		$this->form_validation->set_rules('school_name', 'school name', 'trim|required');
 		$this->form_validation->set_rules('school_address', 'school address', 'trim|required');
+		$this->form_validation->set_rules('school_postal_code', 'poskod', 'trim|required|min_length[5]|max_length[6]|integer');
 		$this->form_validation->set_rules('school_postal_code', 'school postal code', 'trim|required');
 		$this->form_validation->set_rules('school_city_id', 'school city id', 'trim|required');
 		$this->form_validation->set_rules('school_state_id', 'school state id', 'trim|required');
 		$this->form_validation->set_rules('school_country_id', 'school country id', 'trim|required');
+		$this->form_validation->set_rules('school_contact_no', 'No. Telefon', 'trim|required|min_length[10]|max_length[11]|integer');
+		$this->form_validation->set_rules('school_fax_no', 'No. Fax', 'trim|required|min_length[6]|max_length[10]|integer');
+		$this->form_validation->set_rules('school_website', 'school website', 'trim|required');
 		$this->form_validation->set_rules('school_type', 'school type', 'trim|required');
 		$this->form_validation->set_rules('school_level', 'school level', 'trim|required');
-		$this->form_validation->set_rules('create_at', 'create at', 'trim|required');
-		$this->form_validation->set_rules('update_at', 'update at', 'trim|required');
 
 		$this->form_validation->set_rules('school_id', 'school_id', 'trim');
 		$this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
     }
+
+    function fetch_state()
+	{
+	    if($this->input->post('country_id'))
+	      {
+	        echo $this->Dynamic_country_model->fetch_state($this->input->post('country_id'));
+	      }
+	}
+
+	function fetch_city()
+	{
+	    if($this->input->post('state_id'))
+	      {
+	        echo $this->Dynamic_country_model->fetch_city($this->input->post('state_id'));
+	      }
+	}
 }

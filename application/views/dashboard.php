@@ -29,6 +29,9 @@
 
     <script src="<?= base_url(); ?>vendor/assets/js/app.js"></script>
     <script src="<?= base_url(); ?>vendor/assets/js/demo_pages/datatables_responsive.js"></script>
+
+    <script src="<?= base_url(); ?>vendor/assets/js/plugins/notifications/pnotify.min.js"></script>
+	<!-- <script src="<?= base_url(); ?>vendor/assets/js/demo_pages/extra_pnotify.js"></script> -->
     <!-- /theme JS files -->
 </head>
 
@@ -42,7 +45,7 @@
     <div class="page-content">
 
         <!-- Main sidebar -->
-       <?php $this->load->view('sidebar'); ?>
+        <?php $this->load->view('sidebar'); ?>
         <!-- /main sidebar -->
 
         <!-- Main content -->
@@ -75,12 +78,6 @@
                         </div>
                     </div>
                 </div> -->
-
-
-
-
-
-
                 
             </div>
             <!-- /whole row as a control -->

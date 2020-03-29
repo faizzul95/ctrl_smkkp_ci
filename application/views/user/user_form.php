@@ -58,7 +58,7 @@
                     <div class="d-flex">
                         <div class="breadcrumb">
                             <a href="<?= base_url(); ?>dashboard" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Dashboard</a>
-                            <a href="#" class="breadcrumb-item">User</a>
+                            <a href="#" class="breadcrumb-item">Pengguna</a>
                             <span class="breadcrumb-item active"> <?php echo $pagename ?></span>
                         </div>
                     </div>
@@ -80,44 +80,48 @@
                     <h2 class="card-title"><?php echo $pagename ?></h2>
                     <div class="header-elements">
                         <div class="list-icons">
-                            <!-- <a class="list-icons-item" data-action="collapse"></a> -->
-                            <a class="list-icons-item" data-action="reload"></a>
+                            <a class="list-icons-item" data-action="collapse"></a>
+                            <!-- <a class="list-icons-item" data-action="reload"></a> -->
                             <!-- <a class="list-icons-item" data-action="remove"></a> -->
                         </div>
                     </div>
                 </div>
 
-                 <form action="<?php echo $action; ?>" method="post" class="form-horizontal">
+                 <form action="<?php echo $action; ?>" method="post" enctype="multipart/form-data" class="form-horizontal">
                     <div class="card-body">
 
                         <div class="form-group row">
                             <label for="varchar" class="col-sm-2 text-right control-label col-form-label">Nama Pengguna <span class="text-danger">*</span></label>
                             <div class="col-sm-10">
-                                <input type="text" <?php if (form_error('user_username')) { echo 'class="form-control is-invalid"'; } else { echo 'class="form-control"'; }  ?> name="user_username" id="user_username" autocomplete="off" maxlength = "200" placeholder="Please Enter User Username" value="<?php echo $user_username; ?>" /><?php echo form_error('user_username') ?>
+                                <input type="text" <?php if (form_error('user_fullname')) { echo 'class="form-control is-invalid"'; } else { echo 'class="form-control"'; }  ?> name="user_fullname" id="user_fullname" autocomplete="off" maxlength = "200" placeholder="Sila masukkan nama penuh pengguna" value="<?php echo $user_fullname; ?>" /><?php echo form_error('user_fullname') ?>
                             </div>
                         </div>
                             
                         <div class="form-group row">
                             <label for="varchar" class="col-sm-2 text-right control-label col-form-label">Email <span class="text-danger">*</span></label>
                             <div class="col-sm-10">
-                                <input type="text" <?php if (form_error('user_email')) { echo 'class="form-control is-invalid"'; } else { echo 'class="form-control"'; }  ?> name="user_email" id="user_email" autocomplete="off" maxlength = "200" placeholder="Please Enter User Email" value="<?php echo $user_email; ?>" /><?php echo form_error('user_email') ?>
+                                <input type="text" <?php if (form_error('user_email')) { echo 'class="form-control is-invalid"'; } else { echo 'class="form-control"'; }  ?> name="user_email" id="user_email" autocomplete="off" maxlength = "200" placeholder="Sila masukkan alamat e-mail pengguna" value="<?php echo $user_email; ?>" /><?php echo form_error('user_email') ?>
                             </div>
                         </div>
                             
-                        <div class="form-group row">
-                            <label for="varchar" class="col-sm-2 text-right control-label col-form-label">Katalaluan <span class="text-danger">*</span></label>
+                        <!-- Hide from view, Password already auto generate -->
+                        <div class="form-group row" style="display : none">
+                            <label for="varchar" class="col-sm-2 text-right control-label col-form-label">Katalaluan </label>
                             <div class="col-sm-10">
-                                <input type="text" <?php if (form_error('user_password')) { echo 'class="form-control is-invalid"'; } else { echo 'class="form-control"'; }  ?> name="user_password" id="user_password" autocomplete="off" maxlength = "200" placeholder="Please Enter User Password" value="<?php echo $user_password; ?>" /><?php echo form_error('user_password') ?>
+                                <input type="password" class="form-control is-valid" name="user_password" id="user_password" autocomplete="off" maxlength = "200" placeholder="Sila masukkan katalaluan pengguna" value="<?php echo $user_password; ?>" readonly />
+                                <?php echo form_error('user_password') ?>
                             </div>
                         </div>
+                        <!-- Hide from view, Password already auto generate -->
                             
                         <div class="form-group row">
                             <label for="enum" class="col-sm-2 text-right control-label col-form-label">Peranan <span class="text-danger">*</span></label>
                             <div class="col-sm-10">
-                                <!-- <select name="role_id" id="semester_status" class="form-control"> -->
-                                <select name="role_id" <?php if (form_error('role_id')) { echo 'class="form-control select-search is-invalid"'; } else { echo 'class="form-control select-search"'; }  ?> >
+                                <select id="selectPeranan" name="role_id" <?php if (form_error('role_id')) { echo 'class="form-control select-search is-invalid"'; } else { echo 'class="form-control select-search"'; }  ?> >
                                     <?php
-                                        $roleSelect = $this->db->get('schema_user_role')->result();
+                                    	$params = array('role_id !='=>5);
+   										$roleSelect = $this->db->get_where('schema_user_role',$params)->result();
+                                        // $roleSelect = $this->db->get('schema_user_role')->result();
                                         echo "<option value=''> - Sila Pilih Peranan - </option>";
                                         foreach ($roleSelect as $rs){
                                             echo "<option value='$rs->role_id' ";
@@ -126,12 +130,11 @@
                                         }
                                     ?>
                                 </select>
-                                <!-- <input type="text" <?php if (form_error('role_id')) { echo 'class="form-control is-invalid"'; } else { echo 'class="form-control"'; }  ?> name="role_id" id="role_id" onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "11" autocomplete="off" placeholder="Please Enter Role Id" value="<?php echo $role_id; ?>" /> -->
                                 <?php echo (form_error('role_id')) ?>
                             </div>
                         </div>
                             
-                        <div class="form-group row">
+                        <div id="sekolahselect" class="form-group row" <?php echo form_error('school_id') || !empty($school_id) ? '':'style="display : none" '?>>
                             <label for="enum" class="col-sm-2 text-right control-label col-form-label">Nama Sekolah <span class="text-danger">*</span></label>
                             <div class="col-sm-10">
 
@@ -146,18 +149,25 @@
                                     }
                                 ?>
                             </select>
+                            <?php echo (form_error('school_id')) ?>
+                            </div>
+                        </div>
 
-                            <!-- <input type="text" <?php if (form_error('school_id')) { echo 'class="form-control is-invalid"'; } else { echo 'class="form-control"'; }  ?> name="school_id" id="school_id" onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "11" autocomplete="off" placeholder="Please Enter School Id" value="<?php echo $school_id; ?>" /> -->
-                                <?php echo (form_error('school_id')) ?>
-                            </div>
-                        </div>
-                            
-                        <div class="form-group row">
-                            <label for="varchar" class="col-sm-2 text-right control-label col-form-label">User Avatar <span class="text-danger">*</span></label>
+                       <?php if (!empty($user_status)) { ?>
+                       <div class="form-group row">
+                            <label for="enum" class="col-sm-2 text-right control-label col-form-label">Status <span class="text-danger">*</span></label>
                             <div class="col-sm-10">
-                                <input type="file" <?php if (form_error('user_avatar')) { echo 'class="form-control is-invalid"'; } else { echo 'class="form-control"'; }  ?> name="user_avatar" id="user_avatar" autocomplete="off" placeholder="Please Enter User Avatar" value="<?php echo $user_avatar; ?>" /><?php echo form_error('user_avatar') ?>
+                                <?php 
+                                if (form_error('user_status')) {
+                                    $classerror = 'form-control select-search is-invalid';
+                                }else{
+                                    $classerror = 'form-control select-search';
+                                }
+                                echo form_dropdown('user_status',array('active'=>'ACTIVE','inactive'=>'INACTIVE'),$user_status,array('class'=>$classerror))?>
+                                <?php echo form_error('user_status') ?>
                             </div>
                         </div>
+                        <?php  } ?>
 
                         <div class="border-top">
                             <div class="card-body">
@@ -188,3 +198,23 @@
 
 </body>
 </html>
+
+
+<script>
+$(document).ready(function(){
+
+    $('#selectPeranan').on('change',function(){
+        var value = $(this).val();
+        if(value != "" && value != "1"){
+            $( "#sekolahselect" ).fadeIn( "fast", function() {});
+            // $( "#sekolahselect" ).show();
+
+        }else {
+            $( "#sekolahselect" ).fadeOut( "fast", function() {});
+            // $( "#sekolahselects" ).hide();
+        }
+
+    });
+
+});
+</script>

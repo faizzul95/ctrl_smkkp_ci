@@ -10,7 +10,8 @@ class Dashboard extends CI_Controller {
 
 	public function index()
 	{
-		echo $this->session->set_flashdata('current_page','dashboard');
+		check_login();
+		$this->session->set_flashdata('current_page','dashboard');
 		$this->load->view('dashboard');
 	}
 }

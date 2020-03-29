@@ -57,9 +57,9 @@ $string .= "\n\n    public function index()
     
 $string .="\n\n    public function index()
     {
-        \$this->load->view('header');
-        \$this->load->view('$c_url/$v_list');
-        \$this->load->view('footer');
+        \$data['".$table_name."Details'] = \$this->db->get('".$table_name."')->result();
+        echo \$this->session->set_flashdata('current_page','senarai ".label($table_name)."');
+        \$this->load->view('$c_url/$v_list', \$data);
     } 
     
     public function json() {
@@ -78,9 +78,8 @@ foreach ($all as $row) {
     $string .= "\n\t\t\t'" . $row['column_name'] . "' => \$row->" . $row['column_name'] . ",";
 }
 $string .= "\n\t    );
-            \$this->load->view('header');
+            echo \$this->session->set_flashdata('current_page','lihat ".label($table_name)."');
             \$this->load->view('$c_url/$v_read', \$data);
-            \$this->load->view('footer');
         } else {
             \$this->session->set_flashdata('message', 'Rekod Tidak Ditemui');
             redirect(site_url('$c_url'));
@@ -91,15 +90,14 @@ $string .= "\n\t    );
     {
         \$data = array(
             'pagename' => 'Borang Pendaftaran ".ucfirst(label($table_name))."',
-            'button' => 'Register ".ucfirst(label($table_name))."',
+            'button' => 'Daftar ".ucfirst(label($table_name))."',
             'action' => site_url('$c_url/create_action'),";
 foreach ($all as $row) {
     $string .= "\n\t\t\t'" . $row['column_name'] . "' => set_value('" . $row['column_name'] . "'),";
 }
 $string .= "\n\t);
-        \$this->load->view('header');
+        echo \$this->session->set_flashdata('current_page','pendaftaran ".label($table_name)."');
         \$this->load->view('$c_url/$v_form', \$data);
-        \$this->load->view('footer');
     }
     
     public function create_action() 
