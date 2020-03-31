@@ -1,0 +1,8 @@
+INSTRUCTIONS :
+
+1) Change folder name to -> smkkpCi
+2) Extract vendor.zip
+3) Export "smkkp_sis" Database form SQL folder
+
+Notes : database might be error because of column email from table user.
+
