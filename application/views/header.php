@@ -1,3 +1,12 @@
+<!-- GLobal script use -->
+
+<script src="<?= base_url(); ?>vendor/assets/js/plugins/notifications/pnotify.min.js"></script>
+<!-- <script src="<?= base_url(); ?>vendor/assets/js/plugins/notifications/sweet_alert.min.js"></script> -->
+<!-- <script src="<?= base_url(); ?>vendor/assets/js/demo_pages/extra_sweetalert.js"></script> -->
+<!-- /theme JS files -->
+
+<!-- GLobal script use -->
+
 <div class="navbar navbar-expand-md navbar-dark bg-indigo navbar-static">
 	<div class="navbar-brand">
 		<a href="index.php" class="d-inline-block">
@@ -31,9 +40,9 @@
 				//echo $dateTime->format("d/m/y  H:i A"); 
 
 				if ($dateTime->format("A") == "AM") {
-					echo "Selamat Pagi, Mohd Fahmy Izwan Zulkhafri !";
+					echo "Selamat Pagi, ".ucwords($this->session->userdata('userfname'))." !";
 				}else{
-					echo "Selamat Petang, Mohd Fahmy Izwan Zulkhafri !";
+					echo "Selamat Petang, ".ucwords($this->session->userdata('userfname'))." !";
 				}
 			?>
 

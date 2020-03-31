@@ -15,9 +15,9 @@ class Teacher extends CI_Controller
 
     public function index()
     {
-        $this->load->view('header');
-        $this->load->view('teacher/teacher_list');
-        $this->load->view('footer');
+        $data['teacherDetails'] = $this->db->get('teacher')->result();
+        echo $this->session->set_flashdata('current_page','senarai Teacher');
+        $this->load->view('teacher/teacher_list', $data);
     } 
     
     public function json() {
@@ -49,9 +49,8 @@ class Teacher extends CI_Controller
 			'create_at' => $row->create_at,
 			'update_at' => $row->update_at,
 	    );
-            $this->load->view('header');
+            echo $this->session->set_flashdata('current_page','lihat Teacher');
             $this->load->view('teacher/teacher_read', $data);
-            $this->load->view('footer');
         } else {
             $this->session->set_flashdata('message', 'Rekod Tidak Ditemui');
             redirect(site_url('teacher'));
@@ -62,7 +61,7 @@ class Teacher extends CI_Controller
     {
         $data = array(
             'pagename' => 'Borang Pendaftaran Teacher',
-            'button' => 'Register Teacher',
+            'button' => 'Daftar Teacher',
             'action' => site_url('teacher/create_action'),
 			'tch_id' => set_value('tch_id'),
 			'tch_staff_no' => set_value('tch_staff_no'),
@@ -83,9 +82,8 @@ class Teacher extends CI_Controller
 			'create_at' => set_value('create_at'),
 			'update_at' => set_value('update_at'),
 	);
-        $this->load->view('header');
+        echo $this->session->set_flashdata('current_page','pendaftaran Teacher');
         $this->load->view('teacher/teacher_form', $data);
-        $this->load->view('footer');
     }
     
     public function create_action() 

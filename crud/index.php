@@ -60,7 +60,7 @@ require_once 'core/process.php';
     <div class="navbar navbar-expand-md navbar-dark bg-indigo navbar-static">
         <div class="navbar-brand">
             <a href="index.php" class="d-inline-block">
-                <img src="assets/images/logo_light.png" alt="">
+                <img src="../vendor/assets/images/logo_light.png" alt="">
             </a>
         </div>
 

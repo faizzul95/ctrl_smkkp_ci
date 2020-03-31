@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<title>SMK KP | Login</title>
+	<title> Log Masuk | SMK Kinarut Papar </title>
 
 	<!-- Global stylesheets -->
 	<link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">
@@ -70,8 +70,20 @@
 								<!-- <span class="d-block text-muted">Enter your credentials below</span> -->
 							</div>
 
+							<?php
+			                    if($this->session->flashdata('login_error_message'))
+			                    {
+			                 ?>
+			                    <div class="alert alert-danger text-center" style="margin-top:25px;">
+			                        <!-- <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a> -->
+			                       	<?= $this->session->flashdata('login_error_message'); ?>
+			                     </div>
+			                 <?php
+			                    }
+			                ?>
+
 							<div class="form-group form-group-feedback form-group-feedback-left">
-								<input type="text" <?php if (form_error('username')) { echo 'class="form-control is-invalid"'; } else { echo 'class="form-control"'; }  ?> name="username" id="username" placeholder="ID Pengguna">
+								<input type="text" class="form-control <?php echo form_error('username')?'is-invalid':''?>" name="username" id="username" value="<?php echo $username; ?>" placeholder="ID atau Email Pengguna" autocomplete="off">
 								<div class="form-control-feedback">
 									<i class="icon-user text-muted"></i>
 								</div>
@@ -79,7 +91,7 @@
 							</div>
 
 							<div class="form-group form-group-feedback form-group-feedback-left">
-								<input type="password" name="password" <?php if (form_error('username')) { echo 'class="form-control is-invalid"'; } else { echo 'class="form-control"'; }  ?> placeholder="Katalaluan">
+								<input type="password" name="password" value="<?php echo $password; ?>" class="form-control <?php echo form_error('password')?'is-invalid':''?>" placeholder="Katalaluan">
 								<div class="form-control-feedback">
 									<i class="icon-lock2 text-muted"></i>
 								</div>
@@ -91,7 +103,7 @@
 							</div>
 
 							<div class="text-center">
-								<a href="<?= base_url(); ?>auth/forgot_password">Forgot password?</a>
+								<a href="<?= base_url(); ?>auth/forgot_password">Lupa katalaluan ?</a>
 							</div>
 						</div>
 					</div>

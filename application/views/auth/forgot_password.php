@@ -47,17 +47,23 @@
 							<div class="text-center mb-3">
 								<i class="icon-spinner11 icon-2x text-warning border-warning border-3 rounded-round p-3 mb-3 mt-1"></i>
 								<h5 class="mb-0">Password recovery</h5>
-								<span class="d-block text-muted">We'll send you instructions in email</span>
+								<span class="d-block text-muted">Kami akan menghantar arahan dalam e-mel.</span>
 							</div>
 
 							<div class="form-group form-group-feedback form-group-feedback-right">
-								<input type="email" class="form-control" placeholder="Your email">
+								<input type="email" class="form-control" placeholder="Masukkan E-mail Pengguna">
 								<div class="form-control-feedback">
 									<i class="icon-mail5 text-muted"></i>
 								</div>
 							</div>
 
 							<button type="submit" class="btn bg-blue btn-block"><i class="icon-spinner11 mr-2"></i> Reset password</button>
+
+							<br>
+
+							<div class="text-center">
+								<a href="<?= base_url(); ?>auth">Log masuk sistem</a>
+							</div>
 						</div>
 					</div>
 				</form>

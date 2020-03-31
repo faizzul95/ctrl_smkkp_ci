@@ -40,6 +40,9 @@
 								 <tr><td width="250px">School City Id</td><td><?php echo $school_city_id; ?></td></tr>
 								 <tr><td width="250px">School State Id</td><td><?php echo $school_state_id; ?></td></tr>
 								 <tr><td width="250px">School Country Id</td><td><?php echo $school_country_id; ?></td></tr>
+								 <tr><td width="250px">School Contact No</td><td><?php echo $school_contact_no; ?></td></tr>
+								 <tr><td width="250px">School Fax No</td><td><?php echo $school_fax_no; ?></td></tr>
+								 <tr><td width="250px">School Website</td><td><?php echo $school_website; ?></td></tr>
 								 <tr><td width="250px">School Type</td><td><?php echo $school_type; ?></td></tr>
 								 <tr><td width="250px">School Level</td><td><?php echo $school_level; ?></td></tr>
 								 <tr><td width="250px">Create At</td><td><?php echo $create_at; ?></td></tr>

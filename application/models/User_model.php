@@ -8,6 +8,8 @@ class User_model extends CI_Model
 
     public $table = 'user';
     public $id = 'user_id';
+    public $username = 'user_username';
+    public $email = 'user_email';
     public $order = 'DESC';
 
     function __construct()
@@ -17,16 +19,16 @@ class User_model extends CI_Model
 
     // datatables
     function json() {
-        $this->datatables->select('user_id,user_username,user_email,email_verified_at,user_password,user_remember_token,role_id,school_id,user_avatar,created_at,updated_at');
-        $this->datatables->from('user');
+        // $this->datatables->select('user_id,user_username,user_email,email_verified_at,user_password,user_remember_token,role_id,school_id,user_avatar,created_at,updated_at');
+        // $this->datatables->from('user');
 
-        $this->datatables->add_column('action', 
-                anchor(site_url('user/read/$1'),'<i class="fa fa-eye" aria-hidden="true"></i> View', array('class' => 'btn btn-success btn-sm', 'title' => 'view Record')).
-                " | "
-                .anchor(site_url('user/update/$1'),'<i class="mdi mdi-lead-pencil" aria-hidden="true"></i> Update', array('class' => 'btn btn-cyan btn-sm')).
-                " | "
-                .anchor(site_url('user/delete/$1'),'<i class="mdi mdi-delete-forever" aria-hidden="true"></i> Delete', array('class' => 'btn btn-danger btn-sm delete-btn')), 'user_id');
-        return $this->datatables->generate();
+        // $this->datatables->add_column('action', 
+        //         anchor(site_url('user/read/$1'),'<i class="fa fa-eye" aria-hidden="true"></i> View', array('class' => 'btn btn-success btn-sm', 'title' => 'view Record')).
+        //         " | "
+        //         .anchor(site_url('user/update/$1'),'<i class="mdi mdi-lead-pencil" aria-hidden="true"></i> Update', array('class' => 'btn btn-cyan btn-sm')).
+        //         " | "
+        //         .anchor(site_url('user/delete/$1'),'<i class="mdi mdi-delete-forever" aria-hidden="true"></i> Delete', array('class' => 'btn btn-danger btn-sm delete-btn')), 'user_id');
+        // return $this->datatables->generate();
 
     }
 
@@ -41,6 +43,20 @@ class User_model extends CI_Model
     function get_by_id($id)
     {
         $this->db->where($this->id, $id);
+        return $this->db->get($this->table)->row();
+    }
+
+    function get_session_data($id)
+    {
+        $this->db->where($this->id, $id);
+        $result = $this->db->get($this->table,1);
+        return $result;
+    }
+
+    // get email
+    function checkEmail($emailPost)
+    {
+        $this->db->where($this->email, $emailPost);
         return $this->db->get($this->table)->row();
     }
     
@@ -98,6 +114,14 @@ class User_model extends CI_Model
         $this->db->where($this->id, $id);
         $this->db->delete($this->table);
     }
+
+    function validate($username){
+        $this->db->where($this->username, $username);
+        $this->db->or_where($this->email, $username);
+        $result = $this->db->get($this->table,1);
+        return $result;
+    }
+
 
 }
 

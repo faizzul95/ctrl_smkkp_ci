@@ -1989,7 +1989,7 @@ abstract class CI_DB_driver {
         $row = $this->query("SHOW COLUMNS FROM ".$table." LIKE '$field'")->row()->Type;
         $regex = "/'(.*?)'/";
         preg_match_all( $regex , $row, $enum_array );
-        $enums[''] = '- Please Select -';
+        $enums[''] = '- Sila Pilih -';
         $enum_fields = $enum_array[1];
         foreach ($enum_fields as $key=>$value)
         {
