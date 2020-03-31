@@ -97,7 +97,7 @@ class User extends CI_Controller
 	    );
             $this->load->view('user/user_read', $data);
         } else {
-            $this->session->set_flashdata('message', 'Rekod Tidak Ditemui');
+            $this->session->set_flashdata('err_message', 'Rekod Tidak Ditemui');
             redirect(site_url('user'));
         }
     }
@@ -226,7 +226,7 @@ class User extends CI_Controller
 	    );
              $this->load->view('user/user_form', $data);
         } else {
-            $this->session->set_flashdata('message', 'Rekod Tidak Ditemui');
+            $this->session->set_flashdata('err_message', 'Rekod Tidak Ditemui');
             redirect(site_url('user'));
         }
     }
